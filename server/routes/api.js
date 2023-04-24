@@ -15,10 +15,10 @@ router.post('/submit-prompt', async (req, res) => {
             prompt: prompt,
             sessionId: sessionId,
         })
-        console.log('newPrompt: ', newPrompt)
+        // console.log('newPrompt: ', newPrompt)
 
         await newPrompt.save()
-        console.log('newPrompt saved')
+        // console.log('newPrompt saved')
 
         const openAIResponse = await getOpenAIResponse(prompt)
         console.log('openAIResponse: ', openAIResponse)
@@ -54,11 +54,11 @@ async function getOpenAIResponse(prompt) {
     }
 
     try {
-        console.log('openAIUrl: ', openAIUrl)
-        console.log('data: ', data)
-        console.log('headers: ', headers)
+        // console.log('openAIUrl: ', openAIUrl)
+        // console.log('data: ', data)
+        // console.log('headers: ', headers)
         const response = await axios.post(openAIUrl, data, { headers: headers })
-        console.log('response:', response)
+        // console.log('response:', response)
         return response.data.choices[0].message.content.trim()
     } catch (err) {
         throw new Error('Failed to fetch response from OpenAI API')
