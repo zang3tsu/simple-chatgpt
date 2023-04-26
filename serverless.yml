@@ -1,0 +1,25 @@
+service: simple-chatgpt-lambda
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  environment:
+    NODE_ENV: production
+    MONGODB_URI: ${ssm:/simple-chatgpt/mongodb-uri}
+    SESSION_SECRET: ${ssm:/simple-chatgpt/session-secret}
+    OPENAI_API_KEY: ${ssm:/simple-chatgpt/openai-api-key}
+
+functions:
+  app:
+    handler: server/app.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true

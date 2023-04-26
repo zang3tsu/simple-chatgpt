@@ -4,7 +4,7 @@ This is a simple web application that allows users to input a prompt, stores it 
 
 ## Prerequisites
 
-- Node.js (v14 or later)
+- Node.js (v18 or later)
 - MongoDB
 
 ## Setup
@@ -35,7 +35,8 @@ This is a simple web application that allows users to input a prompt, stores it 
     SESSION_SECRET=your_session_secret
     ```
 
-Replace `your_openai_api_key` with your actual OpenAI API key. Replace `your_session_secret` with a random string of characters (You can use `openssl rand -base64 32`).
+    Replace `your_openai_api_key` with your actual OpenAI API key. Replace `your_session_secret` with a random string of characters (You can use `openssl rand -base64 32`).
+
 
 5. Start the server:
 

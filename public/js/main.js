@@ -10,7 +10,7 @@ document
         addPromptToContainer(prompt, true)
 
         try {
-            const response = await fetch('/api/prompts', {
+            const response = await fetch(window.location.href + 'api/prompts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -101,7 +101,8 @@ function showResponseContainer() {
 
 async function fetchAndDisplayPreviousPrompts() {
     try {
-        const response = await fetch('/api/prompts', {
+        // console.log('window.location.href:', window.location.href)
+        const response = await fetch(window.location.href + 'api/prompts', {
             method: 'GET',
             credentials: 'include', // Include the session cookie with the request
         })
@@ -140,9 +141,11 @@ async function fetchAndDisplayPreviousPrompts() {
         }
         const userInputElement = document.getElementById('user-input')
         userInputElement.focus()
-        lastResponseRowItem.scrollIntoView({ behavior: 'smooth' })
+        if (lastResponseRowItem) {
+            lastResponseRowItem.scrollIntoView({ behavior: 'smooth' })
+        }
     } catch (err) {
-        console.error('Failed to fetch previous prompts:', err.message)
+        console.error('Failed to fetch previous prompts:', err)
         showErrorMessage('Failed to fetch previous prompts')
     }
 }
