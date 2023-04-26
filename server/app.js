@@ -6,6 +6,7 @@ const path = require('path')
 require('dotenv').config()
 
 const apiRoutes = require('./routes/api')
+const MongoStore = require('connect-mongo')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -19,6 +20,7 @@ app.use(
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
+        store: MongoStore.create({ mongoUrl: MONGODB_URI }),
         cookie: { secure: false },
     })
 )

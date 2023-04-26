@@ -4,12 +4,13 @@ const Prompt = require('../models/prompt')
 
 const router = express.Router()
 
-router.post('/submit-prompt', async (req, res) => {
+router.post('/prompts', async (req, res) => {
     const prompt = req.body.prompt
     const sessionId = req.session.id
+    // console.log('post sessionId: ', sessionId)
 
     try {
-        console.log('prompt: ', prompt)
+        // console.log('prompt: ', prompt)
 
         const newPrompt = new Prompt({
             prompt: prompt,
@@ -20,8 +21,8 @@ router.post('/submit-prompt', async (req, res) => {
         await newPrompt.save()
         // console.log('newPrompt saved')
 
-        const openAIResponse = await getOpenAIResponse(prompt)
-        console.log('openAIResponse: ', openAIResponse)
+        const openAIResponse = await getOpenAIResponse(prompt, sessionId)
+        // console.log('openAIResponse: ', openAIResponse)
 
         newPrompt.response = openAIResponse
         await newPrompt.save()
@@ -33,7 +34,21 @@ router.post('/submit-prompt', async (req, res) => {
     }
 })
 
-async function getOpenAIResponse(prompt) {
+router.get('/prompts', async (req, res) => {
+    const sessionId = req.session.id
+    // console.log('get sessionId: ', sessionId)
+
+    try {
+        const prompts = await Prompt.find({ sessionId: sessionId }).sort({
+            createdAt: 1,
+        })
+        res.json(prompts)
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+})
+
+async function getOpenAIResponse(prompt, sessionId) {
     const openAIUrl = 'https://api.openai.com/v1/chat/completions'
     const apiKey = process.env.OPENAI_API_KEY
 
@@ -51,6 +66,7 @@ async function getOpenAIResponse(prompt) {
         ],
         model: 'gpt-3.5-turbo',
         max_tokens: 100,
+        user: sessionId,
     }
 
     try {
