@@ -44,6 +44,7 @@ router.get('/prompts', async (req, res) => {
         })
         res.json(prompts)
     } catch (err) {
+        console.log(err)
         res.status(500).json({ error: err.message })
     }
 })
@@ -65,7 +66,7 @@ async function getOpenAIResponse(prompt, sessionId) {
             },
         ],
         model: 'gpt-3.5-turbo',
-        max_tokens: 100,
+        max_tokens: 500,
         user: sessionId,
     }
 
@@ -77,6 +78,7 @@ async function getOpenAIResponse(prompt, sessionId) {
         // console.log('response:', response)
         return response.data.choices[0].message.content.trim()
     } catch (err) {
+        console.log(err)
         throw new Error('Failed to fetch response from OpenAI API')
     }
 }

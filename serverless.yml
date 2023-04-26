@@ -14,6 +14,7 @@ provider:
 functions:
   app:
     handler: server/app.handler
+    timeout: 30
     events:
       - http:
           path: /
